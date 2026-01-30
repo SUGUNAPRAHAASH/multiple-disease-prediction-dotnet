@@ -119,8 +119,27 @@ def render_disclaimer():
     st.markdown("""
         <div class="disclaimer">
             <p style="color: #92400e; font-size: 0.875rem; margin: 0;">
-                <strong>⚠️ Medical Disclaimer:</strong> This application provides informational insights only
-                and is not a medical diagnosis. Please consult a healthcare provider for proper diagnosis.
+                <strong>⚠️ Medical Disclaimer:</strong> This application by MedIndia provides informational insights only
+                and is not a medical diagnosis. Please consult a healthcare provider for proper diagnosis and treatment.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+def render_medindia_footer():
+    """Render MedIndia footer on each page."""
+    st.markdown("---")
+    st.markdown("""
+        <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                    border-radius: 10px; margin-top: 1rem;">
+            <img src="https://medindia.net/images/common/medindia-logo.png"
+                 alt="MedIndia Logo"
+                 style="max-width: 100px; height: auto; margin-bottom: 0.5rem;">
+            <p style="color: #1e3a5f; font-size: 0.85rem; margin: 0;">
+                <strong>MedIndia's HealthPredict AI</strong>
+            </p>
+            <p style="color: #3b82f6; font-size: 0.8rem; margin: 0;">
+                Empowering Better Health
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -314,21 +333,40 @@ def get_risk_level(probability, prediction):
 
 def render_home_page():
     """Render home page."""
-    st.markdown("""
-        <h1>🏥 Welcome to HealthPredict AI</h1>
-        <p style="color: #64748b; font-size: 1.1rem;">
-            Advanced Machine Learning for Early Disease Detection
-        </p>
-    """, unsafe_allow_html=True)
+    # Logo and Title Section
+    col_logo, col_title = st.columns([1, 3])
+
+    with col_logo:
+        st.markdown("""
+            <div style="text-align: center; padding: 1rem;">
+                <img src="https://medindia.net/images/common/medindia-logo.png"
+                     alt="MedIndia Logo"
+                     style="max-width: 150px; height: auto;">
+            </div>
+        """, unsafe_allow_html=True)
+
+    with col_title:
+        st.markdown("""
+            <div style="padding: 1rem 0;">
+                <h1 style="color: #1e3a5f; margin: 0;">Welcome to MedIndia's HealthPredict AI</h1>
+                <p style="color: #64748b; font-size: 1.1rem; margin-top: 0.5rem;">
+                    Advanced Machine Learning for Early Disease Detection
+                </p>
+                <p style="color: #3b82f6; font-size: 0.95rem; font-style: italic;">
+                    Empowering Better Health
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
     # Hero section
     st.markdown("""
-        <div style="background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%);
+        <div style="background: linear-gradient(135deg, #c41e3a 0%, #1e3a5f 50%, #3b82f6 100%);
                     border-radius: 20px; padding: 2rem; margin: 1rem 0; color: white;">
             <h2 style="color: white !important;">Your Personal Health Risk Assessment Platform</h2>
-            <p style="color: #bfdbfe;">
+            <p style="color: #e0e7ff;">
                 Powered by machine learning algorithms, our system analyzes your health
                 parameters to provide instant risk assessments for multiple diseases.
+                A service by <strong>MedIndia - Empowering Better Health</strong>.
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -367,6 +405,7 @@ def render_home_page():
         """, unsafe_allow_html=True)
 
     render_disclaimer()
+    render_medindia_footer()
 
 
 def render_diabetes_page():
@@ -428,6 +467,7 @@ def render_diabetes_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_medindia_footer()
 
 
 def render_heart_page():
@@ -499,6 +539,7 @@ def render_heart_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_medindia_footer()
 
 
 def render_parkinsons_page():
@@ -586,6 +627,7 @@ def render_parkinsons_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_medindia_footer()
 
 
 def render_liver_page():
@@ -649,6 +691,7 @@ def render_liver_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_medindia_footer()
 
 
 # ============================================
@@ -658,7 +701,7 @@ def render_liver_page():
 def main():
     """Main application entry point."""
     st.set_page_config(
-        page_title="HealthPredict AI - Multi-Disease Prediction",
+        page_title="MedIndia's HealthPredict AI - Multi-Disease Prediction",
         page_icon="🏥",
         layout="wide",
         initial_sidebar_state="expanded"
@@ -672,12 +715,21 @@ def main():
 
     # Sidebar
     with st.sidebar:
+        # MedIndia Logo
         st.markdown("""
-            <div style="text-align: center; padding: 1rem;">
-                <h1 style="color: #1e3a5f; font-size: 1.5rem;">
-                    🏥 HealthPredict AI
-                </h1>
-                <p style="color: #64748b; font-size: 0.85rem;">
+            <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; margin-bottom: 1rem;">
+                <img src="https://medindia.net/images/common/medindia-logo.png"
+                     alt="MedIndia Logo"
+                     style="max-width: 180px; height: auto;">
+            </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+            <div style="text-align: center; padding: 0.5rem;">
+                <h2 style="color: #1e3a5f; font-size: 1.3rem; margin: 0;">
+                    HealthPredict AI
+                </h2>
+                <p style="color: #64748b; font-size: 0.85rem; margin: 0.5rem 0 0 0;">
                     Multi-Disease Prediction System
                 </p>
             </div>
@@ -705,6 +757,16 @@ def main():
             <div style="padding: 1rem; background: #f0f9ff; border-radius: 10px;">
                 <p style="color: #0369a1; font-size: 0.8rem;">
                     ℹ️ This tool is for informational purposes only.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+
+        # MedIndia Footer
+        st.markdown("""
+            <div style="text-align: center; padding: 1rem; margin-top: 1rem;">
+                <p style="color: #64748b; font-size: 0.75rem;">
+                    © 2024 MedIndia<br>
+                    <span style="color: #3b82f6;">Empowering Better Health</span>
                 </p>
             </div>
         """, unsafe_allow_html=True)
