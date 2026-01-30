@@ -3,7 +3,7 @@ Multi-Disease Prediction System
 A professional healthcare prediction application built with Streamlit.
 SINGLE FILE VERSION - All code in one file for easy deployment.
 
-Author: AI Healthcare Solutions
+Author: MedIndia
 Version: 1.0.0
 """
 
@@ -19,7 +19,47 @@ from sklearn.metrics import accuracy_score
 import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
+import base64
 import os
+
+
+# ============================================
+# LOGO UTILITY FUNCTION
+# ============================================
+
+def get_logo_base64():
+    """Get logo as base64 string for embedding in HTML."""
+    logo_paths = [
+        Path(__file__).parent / "assets" / "med.jpg",
+        Path("assets") / "med.jpg",
+        Path(__file__).parent / "med.jpg",
+        Path("med.jpg"),
+        # Also check for png version
+        Path(__file__).parent / "assets" / "med.png",
+        Path("assets") / "med.png",
+    ]
+
+    for logo_path in logo_paths:
+        if logo_path.exists():
+            with open(logo_path, "rb") as f:
+                # Determine image type
+                ext = logo_path.suffix.lower()
+                mime_type = "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/png"
+                return base64.b64encode(f.read()).decode(), mime_type
+
+    return None, None
+
+
+def get_logo_html(max_width="150px"):
+    """Get HTML for logo - uses local file if available, otherwise URL."""
+    logo_base64, mime_type = get_logo_base64()
+
+    if logo_base64:
+        return f'<img src="data:{mime_type};base64,{logo_base64}" alt="MedIndia Logo" style="max-width: {max_width}; height: auto;">'
+    else:
+        # Fallback to URL if local file not found
+        return f'<img src="https://medindia.net/images/common/medindia-logo.png" alt="MedIndia Logo" style="max-width: {max_width}; height: auto;">'
+
 
 # ============================================
 # CUSTOM CSS STYLES
@@ -29,17 +69,17 @@ def apply_custom_styles():
     """Apply custom CSS styles for professional healthcare UI."""
     st.markdown("""
         <style>
-        /* Hide Streamlit branding */
+        /* IMPORTANT: Keep header visible so sidebar can be reopened! */
+        /* Only hide the footer and main menu */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
-        header {visibility: hidden;}
 
         /* Main container */
         .stApp {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
 
-        /* Sidebar */
+        /* Sidebar styling */
         [data-testid="stSidebar"] {
             background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
             border-right: 1px solid #e2e8f0;
@@ -128,14 +168,13 @@ def render_disclaimer():
 
 def render_medindia_footer():
     """Render MedIndia footer on each page."""
+    logo_html = get_logo_html("100px")
     st.markdown("---")
-    st.markdown("""
+    st.markdown(f"""
         <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
                     border-radius: 10px; margin-top: 1rem;">
-            <img src=""assets/.jpg""
-                 alt="MedIndia Logo"
-                 style="max-width: 100px; height: auto; margin-bottom: 0.5rem;">
-            <p style="color: #1e3a5f; font-size: 0.85rem; margin: 0;">
+            {logo_html}
+            <p style="color: #1e3a5f; font-size: 0.85rem; margin: 0.5rem 0 0 0;">
                 <strong>MedIndia's HealthPredict AI</strong>
             </p>
             <p style="color: #3b82f6; font-size: 0.8rem; margin: 0;">
@@ -151,7 +190,6 @@ def render_medindia_footer():
 
 def get_data_path(filename):
     """Get path to data file - works locally and on Streamlit Cloud."""
-    # Try multiple possible locations
     possible_paths = [
         Path(__file__).parent / "data" / filename,
         Path(__file__).parent / filename,
@@ -163,7 +201,6 @@ def get_data_path(filename):
         if path.exists():
             return path
 
-    # Default to data folder
     return Path("data") / filename
 
 
@@ -176,7 +213,6 @@ def load_diabetes_data():
     """Load and preprocess diabetes dataset."""
     df = pd.read_csv(get_data_path("diabetes.csv"))
 
-    # Replace zero values with median for columns where 0 is invalid
     zero_not_valid = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
     for col in zero_not_valid:
         if col in df.columns:
@@ -191,7 +227,6 @@ def load_heart_data():
     """Load and preprocess heart disease dataset."""
     df = pd.read_csv(get_data_path("Heart_Disease_Prediction.csv"))
 
-    # Encode target variable
     if 'Heart Disease' in df.columns:
         df['Heart Disease'] = df['Heart Disease'].map({'Presence': 1, 'Absence': 0})
 
@@ -215,11 +250,8 @@ def load_liver_data():
     """Load and preprocess liver disease dataset."""
     df = pd.read_csv(get_data_path("indian_liver_patient.csv"))
 
-    # Encode Gender
     df['Gender'] = df['Gender'].map({'Male': 1, 'Female': 0})
     df = df.fillna(df.median(numeric_only=True))
-
-    # Convert target: 1 = Liver Disease, 2 = No Disease -> 1 = Disease, 0 = No Disease
     df['Dataset'] = df['Dataset'].map({1: 1, 2: 0})
 
     return df
@@ -257,17 +289,14 @@ def train_model(disease_type):
         y = df['Dataset'].values
         feature_names = df.drop('Dataset', axis=1).columns.tolist()
 
-    # Split data
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # Scale features
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    # Train multiple models and select best
     models = {
         'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
         'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
@@ -333,15 +362,15 @@ def get_risk_level(probability, prediction):
 
 def render_home_page():
     """Render home page."""
+    logo_html = get_logo_html("150px")
+
     # Logo and Title Section
     col_logo, col_title = st.columns([1, 3])
 
     with col_logo:
-        st.markdown("""
+        st.markdown(f"""
             <div style="text-align: center; padding: 1rem;">
-                <img src=""assets/.jpg""
-                     alt="MedIndia Logo"
-                     style="max-width: 150px; height: auto;">
+                {logo_html}
             </div>
         """, unsafe_allow_html=True)
 
@@ -413,7 +442,6 @@ def render_diabetes_page():
     st.markdown("<h1>🩸 Diabetes Risk Assessment</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #64748b;'>Evaluate your risk using the PIMA Indians dataset model</p>", unsafe_allow_html=True)
 
-    # Load model
     with st.spinner("Loading model..."):
         model, scaler, model_name, accuracy, results, features = train_model("diabetes")
 
@@ -716,11 +744,10 @@ def main():
     # Sidebar
     with st.sidebar:
         # MedIndia Logo
-        st.markdown("""
+        logo_html = get_logo_html("180px")
+        st.markdown(f"""
             <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; margin-bottom: 1rem;">
-                <img src=""assets/.jpg""
-                     alt="MedIndia Logo"
-                     style="max-width: 180px; height: auto;">
+                {logo_html}
             </div>
         """, unsafe_allow_html=True)
 
