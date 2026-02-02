@@ -1,0 +1,291 @@
+@model DiabetesViewModel
+@{
+    ViewData["Title"] = "Diabetes Risk Assessment";
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-icon">
+            <i class="fas fa-tint"></i>
+        </div>
+        <h1>Diabetes Risk Assessment</h1>
+        <p class="mb-0" style="color: rgba(255,255,255,0.9);">
+            Evaluate your risk of Type 2 Diabetes using machine learning analysis
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Section A: Disease Overview -->
+    <div class="disease-overview">
+        <h2>
+            <i class="fas fa-info-circle" style="color: var(--primary-light);"></i>
+            About Diabetes
+        </h2>
+        <p>
+            Diabetes is a chronic metabolic disorder characterized by elevated blood glucose levels, which over time can lead to
+            serious complications affecting the heart, kidneys, eyes, and nerves. Type 2 Diabetes is the most common form, often
+            associated with lifestyle factors such as obesity, physical inactivity, and poor diet. Early risk assessment enables
+            timely intervention through lifestyle modifications and medical management, significantly improving long-term health outcomes.
+        </p>
+    </div>
+
+    <!-- Section B: Feature Explanations -->
+    <div class="feature-explanations">
+        <h3>
+            <i class="fas fa-clipboard-list me-2"></i>
+            Understanding the Input Parameters
+        </h3>
+        <p class="text-secondary mb-4">
+            Before entering your health data, here's what each parameter means and why it's important:
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-baby"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Pregnancies</div>
+                        <p class="feature-description">Number of times pregnant. Higher numbers may indicate increased insulin resistance history.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-flask"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Glucose Level (mg/dL)</div>
+                        <p class="feature-description">Plasma glucose concentration after 2 hours in an oral glucose tolerance test. Key diabetes indicator.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Blood Pressure (mm Hg)</div>
+                        <p class="feature-description">Diastolic blood pressure reading. High blood pressure often accompanies diabetes.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-ruler"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Skin Thickness (mm)</div>
+                        <p class="feature-description">Triceps skin fold thickness. Indicates body fat distribution related to insulin resistance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-syringe"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Insulin (μU/mL)</div>
+                        <p class="feature-description">2-hour serum insulin level. Abnormal levels suggest impaired glucose metabolism.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-weight"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">BMI (kg/m²)</div>
+                        <p class="feature-description">Body Mass Index - weight in kg divided by height squared. Higher BMI increases diabetes risk.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-dna"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Diabetes Pedigree Function</div>
+                        <p class="feature-description">Genetic influence score based on family history. Higher values indicate stronger genetic predisposition.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Age (years)</div>
+                        <p class="feature-description">Patient age. Risk of Type 2 Diabetes increases with age due to metabolic changes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Prediction Form -->
+    <div class="prediction-form">
+        <h3>
+            <i class="fas fa-edit me-2"></i>
+            Enter Your Health Parameters
+        </h3>
+
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Input.Pregnancies" class="form-label">
+                        Pregnancies <span class="unit">(count)</span>
+                    </label>
+                    <input asp-for="Input.Pregnancies" class="form-control" type="number" min="0" max="20" />
+                    <span asp-validation-for="Input.Pregnancies" class="validation-message"></span>
+                    <small class="form-text">Number of times pregnant (0 if male or never pregnant)</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Glucose" class="form-label">
+                        Glucose <span class="unit">(mg/dL)</span>
+                    </label>
+                    <input asp-for="Input.Glucose" class="form-control" type="number" step="0.1" min="0" max="300" />
+                    <span asp-validation-for="Input.Glucose" class="validation-message"></span>
+                    <small class="form-text">Normal fasting: 70-100 mg/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.BloodPressure" class="form-label">
+                        Blood Pressure <span class="unit">(mm Hg)</span>
+                    </label>
+                    <input asp-for="Input.BloodPressure" class="form-control" type="number" step="0.1" min="0" max="200" />
+                    <span asp-validation-for="Input.BloodPressure" class="validation-message"></span>
+                    <small class="form-text">Diastolic pressure (normal: 60-80 mm Hg)</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.SkinThickness" class="form-label">
+                        Skin Thickness <span class="unit">(mm)</span>
+                    </label>
+                    <input asp-for="Input.SkinThickness" class="form-control" type="number" step="0.1" min="0" max="100" />
+                    <span asp-validation-for="Input.SkinThickness" class="validation-message"></span>
+                    <small class="form-text">Triceps skin fold thickness</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Insulin" class="form-label">
+                        Insulin <span class="unit">(μU/mL)</span>
+                    </label>
+                    <input asp-for="Input.Insulin" class="form-control" type="number" step="0.1" min="0" max="900" />
+                    <span asp-validation-for="Input.Insulin" class="validation-message"></span>
+                    <small class="form-text">2-hour serum insulin level</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.BMI" class="form-label">
+                        BMI <span class="unit">(kg/m²)</span>
+                    </label>
+                    <input asp-for="Input.BMI" class="form-control" type="number" step="0.01" min="0" max="70" />
+                    <span asp-validation-for="Input.BMI" class="validation-message"></span>
+                    <small class="form-text">Normal range: 18.5-24.9 kg/m²</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.DiabetesPedigreeFunction" class="form-label">
+                        Diabetes Pedigree Function
+                    </label>
+                    <input asp-for="Input.DiabetesPedigreeFunction" class="form-control" type="number" step="0.001" min="0" max="3" />
+                    <span asp-validation-for="Input.DiabetesPedigreeFunction" class="validation-message"></span>
+                    <small class="form-text">Family history genetic score (typical: 0.1-1.0)</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Age" class="form-label">
+                        Age <span class="unit">(years)</span>
+                    </label>
+                    <input asp-for="Input.Age" class="form-control" type="number" min="1" max="120" />
+                    <span asp-validation-for="Input.Age" class="validation-message"></span>
+                    <small class="form-text">Your current age</small>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-predict">
+                    <i class="fas fa-search-plus"></i>
+                    Analyze Risk
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        @if (Model.Result != null)
+        {
+            <div class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
+                @if (Model.Result.Success)
+                {
+                    <div class="result-header">
+                        <div class="result-icon">
+                            @if (Model.Result.Prediction == 1)
+                            {
+                                <i class="fas fa-exclamation-triangle"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-check-circle"></i>
+                            }
+                        </div>
+                        <div>
+                            <h3 class="result-title">
+                                @(Model.Result.Prediction == 1 ? "Elevated Diabetes Risk Detected" : "Low Diabetes Risk")
+                            </h3>
+                            <span class="risk-badge @Model.Result.RiskLevel.ToLower()">
+                                @Model.Result.RiskLevel Risk
+                            </span>
+                        </div>
+                    </div>
+
+                    <p>@Model.Result.Message</p>
+
+                    <div class="result-details">
+                        <div class="result-metric">
+                            <div class="result-metric-label">Confidence</div>
+                            <div class="result-metric-value">
+                                @if (Model.Result.Prediction == 0)
+                                {
+                                    @((100 - Model.Result.Probability).ToString("F1"))@:%
+                                }
+                                else
+                                {
+                                    @Model.Result.Probability.ToString("F1")@:%
+                                }
+                            </div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Risk Level</div>
+                            <div class="result-metric-value">@Model.Result.RiskLevel</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Assessment</div>
+                            <div class="result-metric-value">@Model.Result.Disease</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: var(--warning-yellow);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: var(--warning-yellow);">Analysis Error</h3>
+                        </div>
+                    </div>
+                    <p>@Model.Result.Error</p>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This diabetes risk assessment provides informational insights only and is <strong>not a medical diagnosis</strong>.
+            The results are based on machine learning analysis of the PIMA Indians Diabetes Dataset. Please consult a
+            qualified healthcare professional for proper diagnosis and treatment of diabetes or any health concerns.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

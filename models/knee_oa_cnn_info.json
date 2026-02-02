@@ -1,0 +1,26 @@
+{
+  "model_name": "Knee OA CNN (Quick)",
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "num_classes": 5,
+  "class_names": {
+    "0": "Normal (Grade 0)",
+    "1": "Doubtful (Grade 1)",
+    "2": "Mild (Grade 2)",
+    "3": "Moderate (Grade 3)",
+    "4": "Severe (Grade 4)"
+  },
+  "severity_descriptions": {
+    "0": "No signs of osteoarthritis. The knee joint appears healthy with normal cartilage space.",
+    "1": "Doubtful narrowing of joint space with possible osteophytic lipping. Very early signs that may or may not indicate OA.",
+    "2": "Definite osteophytes and possible narrowing of joint space. Mild osteoarthritis is present.",
+    "3": "Moderate multiple osteophytes, definite narrowing of joint space, some sclerosis. Moderate OA requiring attention.",
+    "4": "Large osteophytes, marked narrowing of joint space, severe sclerosis and definite deformity. Severe OA - medical intervention needed."
+  },
+  "epochs_trained": 5,
+  "final_accuracy": 0.424368292093277,
+  "final_val_accuracy": 0.4673123359680176
+}

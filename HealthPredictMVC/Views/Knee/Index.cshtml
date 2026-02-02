@@ -1,0 +1,503 @@
+@model KneeViewModel
+@{
+    ViewData["Title"] = "Knee Pain Severity Assessment";
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-icon">
+            <i class="fas fa-x-ray"></i>
+        </div>
+        <h1>Knee Pain Severity Assessment</h1>
+        <p class="mb-0" style="color: rgba(255,255,255,0.9);">
+            AI-powered X-ray analysis using Convolutional Neural Networks (CNN)
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Section A: Disease Overview -->
+    <div class="disease-overview">
+        <h2>
+            <i class="fas fa-info-circle" style="color: var(--primary-light);"></i>
+            About Knee Osteoarthritis
+        </h2>
+        <p>
+            Knee Osteoarthritis (OA) is the most common form of arthritis, affecting millions of people worldwide.
+            It occurs when the protective cartilage that cushions the ends of the bones wears down over time,
+            causing pain, stiffness, and reduced mobility. The severity is measured using the Kellgren-Lawrence (KL)
+            grading system, which ranges from Grade 0 (normal) to Grade 4 (severe). Early detection through X-ray
+            analysis enables timely intervention, potentially slowing disease progression and improving quality of life.
+        </p>
+    </div>
+
+    <!-- Section B: Grading System Explanation -->
+    <div class="feature-explanations">
+        <h3>
+            <i class="fas fa-clipboard-list me-2"></i>
+            Kellgren-Lawrence Grading System
+        </h3>
+        <p class="text-secondary mb-4">
+            Our CNN model classifies knee X-rays into 5 severity grades:
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item" style="border-left: 4px solid #10b981;">
+                    <div class="feature-icon" style="background: #d1fae5; color: #10b981;">0</div>
+                    <div class="feature-content">
+                        <div class="feature-name">Grade 0 - Normal</div>
+                        <p class="feature-description">No radiographic features of osteoarthritis. Healthy knee joint with normal cartilage space.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item" style="border-left: 4px solid #60a5fa;">
+                    <div class="feature-icon" style="background: #dbeafe; color: #3b82f6;">1</div>
+                    <div class="feature-content">
+                        <div class="feature-name">Grade 1 - Doubtful</div>
+                        <p class="feature-description">Doubtful narrowing of joint space with possible osteophytic lipping. Very early, questionable changes.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item" style="border-left: 4px solid #f59e0b;">
+                    <div class="feature-icon" style="background: #fef3c7; color: #f59e0b;">2</div>
+                    <div class="feature-content">
+                        <div class="feature-name">Grade 2 - Mild</div>
+                        <p class="feature-description">Definite osteophytes and possible narrowing of joint space. Mild osteoarthritis is present.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-item" style="border-left: 4px solid #f97316;">
+                    <div class="feature-icon" style="background: #ffedd5; color: #f97316;">3</div>
+                    <div class="feature-content">
+                        <div class="feature-name">Grade 3 - Moderate</div>
+                        <p class="feature-description">Multiple osteophytes, definite joint space narrowing, some sclerosis, possible bone deformity.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item" style="border-left: 4px solid #ef4444;">
+                    <div class="feature-icon" style="background: #fee2e2; color: #ef4444;">4</div>
+                    <div class="feature-content">
+                        <div class="feature-name">Grade 4 - Severe</div>
+                        <p class="feature-description">Large osteophytes, marked joint space narrowing, severe sclerosis, definite bone deformity.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item" style="border-left: 4px solid var(--primary-light);">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">CNN Technology</div>
+                        <p class="feature-description">Our model uses MobileNetV2 transfer learning trained on thousands of knee X-ray images for accurate classification.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Upload Form -->
+    <div class="prediction-form">
+        <h3>
+            <i class="fas fa-upload me-2"></i>
+            Upload Knee X-Ray Image
+        </h3>
+
+        <form asp-action="Index" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h4>Drag & Drop or Click to Upload</h4>
+                    <p class="text-muted">Supported formats: JPEG, PNG (Max 10MB)</p>
+                    <input type="file" asp-for="ImageFile" id="imageInput" accept="image/jpeg,image/png,image/jpg" class="upload-input" />
+                    <label for="imageInput" class="btn-upload">
+                        <i class="fas fa-folder-open me-2"></i>Choose File
+                    </label>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="image-preview" id="imagePreview" style="display: none;">
+                    <img id="previewImg" src="" alt="Preview" />
+                    <button type="button" class="btn-remove-image" onclick="removeImage()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="fileName" class="file-name"></div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageBase64))
+            {
+                <div class="uploaded-image-container mt-3">
+                    <h5><i class="fas fa-image me-2"></i>Uploaded Image</h5>
+                    <img src="@Model.ImageBase64" alt="Uploaded X-Ray" class="uploaded-xray" />
+                </div>
+            }
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-predict" id="analyzeBtn">
+                    <i class="fas fa-search-plus"></i>
+                    Analyze X-Ray
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        @if (Model.Result != null)
+        {
+            var resultClass = Model.Result.Success
+                ? (Model.Result.Prediction >= 3 ? "positive" : (Model.Result.Prediction >= 2 ? "warning" : "negative"))
+                : "error";
+
+            <div class="result-card @resultClass">
+                @if (Model.Result.Success)
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: @GetGradeColor(Model.Result.Prediction);">
+                            @Model.Result.Prediction
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: @GetGradeColor(Model.Result.Prediction);">
+                                @Model.Result.Classification
+                            </h3>
+                            <span class="risk-badge @Model.Result.RiskLevel.ToLower()">
+                                @Model.Result.RiskLevel Risk
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="result-description">
+                        <h5><i class="fas fa-stethoscope me-2"></i>Diagnosis</h5>
+                        <p>@Model.Result.Description</p>
+                    </div>
+
+                    <div class="result-recommendation">
+                        <h5><i class="fas fa-clipboard-check me-2"></i>Recommendation</h5>
+                        <p>@Model.Result.Recommendation</p>
+                    </div>
+
+                    <div class="result-details">
+                        <div class="result-metric">
+                            <div class="result-metric-label">Confidence</div>
+                            <div class="result-metric-value">@Model.Result.Confidence.ToString("F1")%</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Grade</div>
+                            <div class="result-metric-value">@Model.Result.Grade</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Risk Level</div>
+                            <div class="result-metric-value">@Model.Result.RiskLevel</div>
+                        </div>
+                    </div>
+
+                    @if (Model.Result.AllProbabilities != null && Model.Result.AllProbabilities.Count > 0)
+                    {
+                        <div class="probability-bars mt-4">
+                            <h5><i class="fas fa-chart-bar me-2"></i>All Grade Probabilities</h5>
+                            @foreach (var prob in Model.Result.AllProbabilities.OrderBy(p => p.Key))
+                            {
+                                <div class="probability-row">
+                                    <span class="prob-label">@prob.Key</span>
+                                    <div class="prob-bar-container">
+                                        <div class="prob-bar" style="width: @prob.Value%; background: @GetGradeColorByName(prob.Key);"></div>
+                                    </div>
+                                    <span class="prob-value">@prob.Value.ToString("F1")%</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: var(--warning-yellow);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: var(--warning-yellow);">Analysis Error</h3>
+                        </div>
+                    </div>
+                    <p>@Model.Result.Error</p>
+                    @if (!string.IsNullOrEmpty(Model.Result.Message))
+                    {
+                        <p class="text-muted">@Model.Result.Message</p>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This knee osteoarthritis assessment provides informational insights only and is <strong>not a medical diagnosis</strong>.
+            The analysis uses a Convolutional Neural Network (CNN) trained on the Knee Osteoarthritis Dataset.
+            X-ray interpretation should always be performed by a qualified radiologist or orthopedic specialist.
+            Please consult a healthcare professional for proper diagnosis and treatment of knee pain or arthritis.
+        </p>
+    </div>
+</div>
+
+@functions {
+    string GetGradeColor(int grade)
+    {
+        return grade switch
+        {
+            0 => "#10b981",
+            1 => "#3b82f6",
+            2 => "#f59e0b",
+            3 => "#f97316",
+            4 => "#ef4444",
+            _ => "#6b7280"
+        };
+    }
+
+    string GetGradeColorByName(string name)
+    {
+        if (name.Contains("Grade 0") || name.Contains("Normal")) return "#10b981";
+        if (name.Contains("Grade 1") || name.Contains("Doubtful")) return "#3b82f6";
+        if (name.Contains("Grade 2") || name.Contains("Mild")) return "#f59e0b";
+        if (name.Contains("Grade 3") || name.Contains("Moderate")) return "#f97316";
+        if (name.Contains("Grade 4") || name.Contains("Severe")) return "#ef4444";
+        return "#6b7280";
+    }
+}
+
+<style>
+    /* Upload Area Styles */
+    .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 3rem;
+        text-align: center;
+        background: var(--bg-light);
+        transition: all var(--transition-normal);
+        position: relative;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+        border-color: var(--primary-light);
+        background: #eff6ff;
+    }
+
+    .upload-icon {
+        font-size: 4rem;
+        color: var(--primary-light);
+        margin-bottom: 1rem;
+    }
+
+    .upload-input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .btn-upload {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-light);
+        color: white;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-top: 1rem;
+    }
+
+    .btn-upload:hover {
+        background: var(--primary-blue);
+    }
+
+    .image-preview {
+        position: relative;
+        max-width: 400px;
+        margin: 1rem auto;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-remove-image {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--danger-red);
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .file-name {
+        text-align: center;
+        margin-top: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .uploaded-image-container {
+        text-align: center;
+        padding: 1rem;
+        background: var(--bg-light);
+        border-radius: var(--radius-lg);
+    }
+
+    .uploaded-xray {
+        max-width: 300px;
+        max-height: 300px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Result Styles */
+    .result-card.warning {
+        background: linear-gradient(135deg, var(--warning-light) 0%, #fde68a 100%);
+        border: 2px solid var(--warning-yellow);
+    }
+
+    .result-description,
+    .result-recommendation {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        margin: 1rem 0;
+    }
+
+    .result-description h5,
+    .result-recommendation h5 {
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    /* Probability Bars */
+    .probability-bars {
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+    }
+
+    .probability-bars h5 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .probability-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .prob-label {
+        width: 140px;
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+    }
+
+    .prob-bar-container {
+        flex: 1;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0 1rem;
+    }
+
+    .prob-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease-out;
+    }
+
+    .prob-value {
+        width: 60px;
+        text-align: right;
+        font-weight: 600;
+        color: var(--primary-blue);
+    }
+</style>
+
+@section Scripts {
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileName = document.getElementById('fileName');
+
+        // Drag and drop handling
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false);
+        });
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                imageInput.files = files;
+                handleFiles(files);
+            }
+        }
+
+        imageInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        document.querySelector('.upload-content').style.display = 'none';
+                    }
+                    reader.readAsDataURL(file);
+                    fileName.textContent = `Selected: ${file.name}`;
+                }
+            }
+        }
+
+        function removeImage() {
+            imageInput.value = '';
+            imagePreview.style.display = 'none';
+            document.querySelector('.upload-content').style.display = 'block';
+            fileName.textContent = '';
+        }
+    </script>
+}

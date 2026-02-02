@@ -27,3 +27,13 @@ models/*.pkl
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Large dataset folders (download separately)
+Knee-Osteoarthritis-Dataset/
+
+# Temporary/null files
+nul
+
+# ASP.NET build artifacts
+HealthPredictMVC/bin/
+HealthPredictMVC/obj/

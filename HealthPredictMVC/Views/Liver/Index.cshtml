@@ -1,0 +1,323 @@
+@model LiverViewModel
+@{
+    ViewData["Title"] = "Liver Health Analysis";
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-icon">
+            <i class="fas fa-liver"></i>
+        </div>
+        <h1>Liver Health Analysis</h1>
+        <p class="mb-0" style="color: rgba(255,255,255,0.9);">
+            Comprehensive liver function assessment using biochemical markers and machine learning
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Section A: Disease Overview -->
+    <div class="disease-overview">
+        <h2>
+            <i class="fas fa-info-circle" style="color: var(--primary-light);"></i>
+            About Liver Disease
+        </h2>
+        <p>
+            The liver is one of the body's most vital organs, responsible for over 500 functions including detoxification,
+            protein synthesis, and bile production for digestion. Liver disease can range from fatty liver to cirrhosis and
+            liver failure. Common causes include hepatitis infections, alcohol abuse, obesity, and certain medications.
+            Early detection through liver function tests (LFTs) enables timely intervention. Elevated enzyme levels and
+            abnormal protein ratios often indicate liver stress or damage before symptoms appear.
+        </p>
+    </div>
+
+    <!-- Section B: Feature Explanations -->
+    <div class="feature-explanations">
+        <h3>
+            <i class="fas fa-clipboard-list me-2"></i>
+            Understanding the Liver Function Parameters
+        </h3>
+        <p class="text-secondary mb-4">
+            These blood test values help assess your liver health:
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Age</div>
+                        <p class="feature-description">Liver function and regeneration capacity change with age. Older individuals may have reduced liver reserve.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-venus-mars"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Gender</div>
+                        <p class="feature-description">Liver disease patterns differ by sex. Men have higher rates of alcoholic liver disease, women are more susceptible to certain autoimmune liver conditions.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-fill-drip"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Total Bilirubin (mg/dL)</div>
+                        <p class="feature-description">Yellowish pigment from red blood cell breakdown. High levels cause jaundice and indicate liver dysfunction or bile duct obstruction.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-tint"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Direct Bilirubin (mg/dL)</div>
+                        <p class="feature-description">Conjugated bilirubin processed by the liver. Elevated levels often indicate liver cell damage or bile duct problems.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-flask"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Alkaline Phosphatase (IU/L)</div>
+                        <p class="feature-description">Enzyme found in liver and bone. High levels may indicate bile duct obstruction, liver damage, or bone disorders.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-vial"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">ALT / SGPT (IU/L)</div>
+                        <p class="feature-description">Alanine Aminotransferase - enzyme primarily found in liver cells. Elevated levels are a specific marker for liver cell injury.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-syringe"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">AST / SGOT (IU/L)</div>
+                        <p class="feature-description">Aspartate Aminotransferase - found in liver, heart, and muscles. Elevated with ALT suggests liver damage; alone may indicate heart or muscle issues.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-dna"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Total Proteins (g/dL)</div>
+                        <p class="feature-description">Combined albumin and globulin. Low levels indicate impaired liver protein synthesis or protein loss.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-egg"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Albumin (g/dL)</div>
+                        <p class="feature-description">Main protein made by the liver. Low albumin levels suggest chronic liver disease or malnutrition.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-balance-scale"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Albumin/Globulin Ratio</div>
+                        <p class="feature-description">Ratio of albumin to globulin proteins. Abnormal ratios can indicate liver disease, kidney problems, or immune disorders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Prediction Form -->
+    <div class="prediction-form">
+        <h3>
+            <i class="fas fa-edit me-2"></i>
+            Enter Your Liver Function Test Results
+        </h3>
+
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Input.Age" class="form-label">
+                        Age <span class="unit">(years)</span>
+                    </label>
+                    <input asp-for="Input.Age" class="form-control" type="number" min="1" max="120" />
+                    <span asp-validation-for="Input.Age" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Gender" class="form-label">Gender</label>
+                    <select asp-for="Input.Gender" class="form-control form-select">
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                    <span asp-validation-for="Input.Gender" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.TotalBilirubin" class="form-label">
+                        Total Bilirubin <span class="unit">(mg/dL)</span>
+                    </label>
+                    <input asp-for="Input.TotalBilirubin" class="form-control" type="number" step="0.1" min="0" max="80" />
+                    <span asp-validation-for="Input.TotalBilirubin" class="validation-message"></span>
+                    <small class="form-text">Normal: 0.1-1.2 mg/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.DirectBilirubin" class="form-label">
+                        Direct Bilirubin <span class="unit">(mg/dL)</span>
+                    </label>
+                    <input asp-for="Input.DirectBilirubin" class="form-control" type="number" step="0.1" min="0" max="20" />
+                    <span asp-validation-for="Input.DirectBilirubin" class="validation-message"></span>
+                    <small class="form-text">Normal: 0.0-0.3 mg/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AlkalinePhosphatase" class="form-label">
+                        Alkaline Phosphatase <span class="unit">(IU/L)</span>
+                    </label>
+                    <input asp-for="Input.AlkalinePhosphatase" class="form-control" type="number" min="0" max="2500" />
+                    <span asp-validation-for="Input.AlkalinePhosphatase" class="validation-message"></span>
+                    <small class="form-text">Normal: 44-147 IU/L</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ALT" class="form-label">
+                        ALT / SGPT <span class="unit">(IU/L)</span>
+                    </label>
+                    <input asp-for="Input.ALT" class="form-control" type="number" min="0" max="2000" />
+                    <span asp-validation-for="Input.ALT" class="validation-message"></span>
+                    <small class="form-text">Normal: 7-56 IU/L</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AST" class="form-label">
+                        AST / SGOT <span class="unit">(IU/L)</span>
+                    </label>
+                    <input asp-for="Input.AST" class="form-control" type="number" min="0" max="5000" />
+                    <span asp-validation-for="Input.AST" class="validation-message"></span>
+                    <small class="form-text">Normal: 10-40 IU/L</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.TotalProteins" class="form-label">
+                        Total Proteins <span class="unit">(g/dL)</span>
+                    </label>
+                    <input asp-for="Input.TotalProteins" class="form-control" type="number" step="0.1" min="0" max="15" />
+                    <span asp-validation-for="Input.TotalProteins" class="validation-message"></span>
+                    <small class="form-text">Normal: 6.0-8.3 g/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Albumin" class="form-label">
+                        Albumin <span class="unit">(g/dL)</span>
+                    </label>
+                    <input asp-for="Input.Albumin" class="form-control" type="number" step="0.1" min="0" max="10" />
+                    <span asp-validation-for="Input.Albumin" class="validation-message"></span>
+                    <small class="form-text">Normal: 3.4-5.4 g/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AGRatio" class="form-label">Albumin/Globulin Ratio</label>
+                    <input asp-for="Input.AGRatio" class="form-control" type="number" step="0.1" min="0" max="3" />
+                    <span asp-validation-for="Input.AGRatio" class="validation-message"></span>
+                    <small class="form-text">Normal: 1.1-2.5</small>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-predict">
+                    <i class="fas fa-liver"></i>
+                    Analyze Liver Health
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        @if (Model.Result != null)
+        {
+            <div class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
+                @if (Model.Result.Success)
+                {
+                    <div class="result-header">
+                        <div class="result-icon">
+                            @if (Model.Result.Prediction == 1)
+                            {
+                                <i class="fas fa-exclamation-triangle"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-check-circle"></i>
+                            }
+                        </div>
+                        <div>
+                            <h3 class="result-title">
+                                @(Model.Result.Prediction == 1 ? "Liver Function Concerns Detected" : "Liver Function Appears Normal")
+                            </h3>
+                            <span class="risk-badge @Model.Result.RiskLevel.ToLower()">
+                                @Model.Result.RiskLevel Risk
+                            </span>
+                        </div>
+                    </div>
+
+                    <p>@Model.Result.Message</p>
+
+                    <div class="result-details">
+                        <div class="result-metric">
+                            <div class="result-metric-label">Confidence</div>
+                            <div class="result-metric-value">
+                                @if (Model.Result.Prediction == 0)
+                                {
+                                    @((100 - Model.Result.Probability).ToString("F1"))@:%
+                                }
+                                else
+                                {
+                                    @Model.Result.Probability.ToString("F1")@:%
+                                }
+                            </div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Risk Level</div>
+                            <div class="result-metric-value">@Model.Result.RiskLevel</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Assessment</div>
+                            <div class="result-metric-value">Hepatic</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: var(--warning-yellow);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: var(--warning-yellow);">Analysis Error</h3>
+                        </div>
+                    </div>
+                    <p>@Model.Result.Error</p>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This liver health analysis provides informational insights only and is <strong>not a medical diagnosis</strong>.
+            The results are based on machine learning analysis of the Indian Liver Patient Dataset. Please consult a
+            hepatologist or gastroenterologist for proper liver evaluation and treatment of any liver-related concerns.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

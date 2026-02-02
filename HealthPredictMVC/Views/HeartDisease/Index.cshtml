@@ -1,0 +1,380 @@
+@model HeartDiseaseViewModel
+@{
+    ViewData["Title"] = "Heart Disease Check";
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <h1>Heart Disease Risk Assessment</h1>
+        <p class="mb-0" style="color: rgba(255,255,255,0.9);">
+            Comprehensive cardiac risk evaluation using advanced machine learning
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Section A: Disease Overview -->
+    <div class="disease-overview">
+        <h2>
+            <i class="fas fa-info-circle" style="color: var(--primary-light);"></i>
+            About Heart Disease
+        </h2>
+        <p>
+            Cardiovascular disease (CVD) is the leading cause of death globally, accounting for nearly one-third of all deaths worldwide.
+            It encompasses conditions affecting the heart and blood vessels, including coronary artery disease, heart failure, and arrhythmias.
+            Risk factors include high blood pressure, elevated cholesterol, smoking, diabetes, and family history. Early detection through
+            comprehensive screening allows for lifestyle modifications and medical interventions that can significantly reduce cardiac events.
+        </p>
+    </div>
+
+    <!-- Section B: Feature Explanations -->
+    <div class="feature-explanations">
+        <h3>
+            <i class="fas fa-clipboard-list me-2"></i>
+            Understanding the Input Parameters
+        </h3>
+        <p class="text-secondary mb-4">
+            These parameters are commonly used in cardiac risk assessment:
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Age</div>
+                        <p class="feature-description">Risk of heart disease increases significantly with age, especially after 45 for men and 55 for women.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-venus-mars"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Sex</div>
+                        <p class="feature-description">Biological sex affects heart disease risk, with men generally at higher risk at younger ages.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-lungs"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Chest Pain Type</div>
+                        <p class="feature-description">Type of chest discomfort experienced (1=Typical angina, 2=Atypical, 3=Non-anginal, 4=Asymptomatic).</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Resting Blood Pressure</div>
+                        <p class="feature-description">Blood pressure at rest in mm Hg. High BP is a major cardiovascular risk factor.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-bacon"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Cholesterol</div>
+                        <p class="feature-description">Serum cholesterol in mg/dL. High levels contribute to arterial plaque buildup.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-tint"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Fasting Blood Sugar</div>
+                        <p class="feature-description">Whether fasting blood sugar exceeds 120 mg/dL, indicating possible diabetes.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-wave-square"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Resting ECG Results</div>
+                        <p class="feature-description">Electrocardiogram findings at rest (0=Normal, 1=ST-T wave abnormality, 2=Left ventricular hypertrophy).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-running"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Maximum Heart Rate</div>
+                        <p class="feature-description">Highest heart rate achieved during exercise testing. Lower values may indicate cardiac limitations.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Exercise-Induced Angina</div>
+                        <p class="feature-description">Whether exercise causes chest pain, suggesting reduced blood flow to the heart.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">ST Depression</div>
+                        <p class="feature-description">ST segment depression induced by exercise, measured relative to rest. Indicates ischemia.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-mountain"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Slope of ST Segment</div>
+                        <p class="feature-description">Shape of ST segment during peak exercise (1=Upsloping, 2=Flat, 3=Downsloping).</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Major Vessels (Fluoroscopy)</div>
+                        <p class="feature-description">Number of major vessels (0-3) colored by fluoroscopy. More blocked vessels = higher risk.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-atom"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Thallium Stress Test</div>
+                        <p class="feature-description">Nuclear stress test result (3=Normal, 6=Fixed defect, 7=Reversible defect).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Prediction Form -->
+    <div class="prediction-form">
+        <h3>
+            <i class="fas fa-edit me-2"></i>
+            Enter Your Health Parameters
+        </h3>
+
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Input.Age" class="form-label">
+                        Age <span class="unit">(years)</span>
+                    </label>
+                    <input asp-for="Input.Age" class="form-control" type="number" min="1" max="120" />
+                    <span asp-validation-for="Input.Age" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Sex" class="form-label">Sex</label>
+                    <select asp-for="Input.Sex" class="form-control form-select">
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                    <span asp-validation-for="Input.Sex" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ChestPainType" class="form-label">Chest Pain Type</label>
+                    <select asp-for="Input.ChestPainType" class="form-control form-select">
+                        <option value="1">Typical Angina</option>
+                        <option value="2">Atypical Angina</option>
+                        <option value="3">Non-Anginal Pain</option>
+                        <option value="4">Asymptomatic</option>
+                    </select>
+                    <span asp-validation-for="Input.ChestPainType" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.BP" class="form-label">
+                        Resting Blood Pressure <span class="unit">(mm Hg)</span>
+                    </label>
+                    <input asp-for="Input.BP" class="form-control" type="number" min="80" max="220" />
+                    <span asp-validation-for="Input.BP" class="validation-message"></span>
+                    <small class="form-text">Normal: 90-120 mm Hg</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Cholesterol" class="form-label">
+                        Cholesterol <span class="unit">(mg/dL)</span>
+                    </label>
+                    <input asp-for="Input.Cholesterol" class="form-control" type="number" min="100" max="600" />
+                    <span asp-validation-for="Input.Cholesterol" class="validation-message"></span>
+                    <small class="form-text">Desirable: &lt;200 mg/dL</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.FBSOver120" class="form-label">Fasting Blood Sugar &gt; 120 mg/dL</label>
+                    <select asp-for="Input.FBSOver120" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                    <span asp-validation-for="Input.FBSOver120" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.EKGResults" class="form-label">Resting ECG Results</label>
+                    <select asp-for="Input.EKGResults" class="form-control form-select">
+                        <option value="0">Normal</option>
+                        <option value="1">ST-T Wave Abnormality</option>
+                        <option value="2">Left Ventricular Hypertrophy</option>
+                    </select>
+                    <span asp-validation-for="Input.EKGResults" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.MaxHR" class="form-label">
+                        Maximum Heart Rate <span class="unit">(bpm)</span>
+                    </label>
+                    <input asp-for="Input.MaxHR" class="form-control" type="number" min="60" max="220" />
+                    <span asp-validation-for="Input.MaxHR" class="validation-message"></span>
+                    <small class="form-text">Achieved during exercise test</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ExerciseAngina" class="form-label">Exercise-Induced Angina</label>
+                    <select asp-for="Input.ExerciseAngina" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                    <span asp-validation-for="Input.ExerciseAngina" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.STDepression" class="form-label">ST Depression</label>
+                    <input asp-for="Input.STDepression" class="form-control" type="number" step="0.1" min="0" max="10" />
+                    <span asp-validation-for="Input.STDepression" class="validation-message"></span>
+                    <small class="form-text">Relative to rest (0-6.2 typical)</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.SlopeOfST" class="form-label">Slope of ST Segment</label>
+                    <select asp-for="Input.SlopeOfST" class="form-control form-select">
+                        <option value="1">Upsloping</option>
+                        <option value="2">Flat</option>
+                        <option value="3">Downsloping</option>
+                    </select>
+                    <span asp-validation-for="Input.SlopeOfST" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.NumberOfVessels" class="form-label">Major Vessels (Fluoroscopy)</label>
+                    <select asp-for="Input.NumberOfVessels" class="form-control form-select">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <span asp-validation-for="Input.NumberOfVessels" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Thallium" class="form-label">Thallium Stress Test</label>
+                    <select asp-for="Input.Thallium" class="form-control form-select">
+                        <option value="3">Normal</option>
+                        <option value="6">Fixed Defect</option>
+                        <option value="7">Reversible Defect</option>
+                    </select>
+                    <span asp-validation-for="Input.Thallium" class="validation-message"></span>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-predict">
+                    <i class="fas fa-heartbeat"></i>
+                    Analyze Cardiac Risk
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        @if (Model.Result != null)
+        {
+            <div class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
+                @if (Model.Result.Success)
+                {
+                    <div class="result-header">
+                        <div class="result-icon">
+                            @if (Model.Result.Prediction == 1)
+                            {
+                                <i class="fas fa-exclamation-triangle"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-check-circle"></i>
+                            }
+                        </div>
+                        <div>
+                            <h3 class="result-title">
+                                @(Model.Result.Prediction == 1 ? "Elevated Heart Disease Risk" : "Low Heart Disease Risk")
+                            </h3>
+                            <span class="risk-badge @Model.Result.RiskLevel.ToLower()">
+                                @Model.Result.RiskLevel Risk
+                            </span>
+                        </div>
+                    </div>
+
+                    <p>@Model.Result.Message</p>
+
+                    <div class="result-details">
+                        <div class="result-metric">
+                            <div class="result-metric-label">Confidence</div>
+                            <div class="result-metric-value">
+                                @if (Model.Result.Prediction == 0)
+                                {
+                                    @((100 - Model.Result.Probability).ToString("F1"))@:%
+                                }
+                                else
+                                {
+                                    @Model.Result.Probability.ToString("F1")@:%
+                                }
+                            </div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Risk Level</div>
+                            <div class="result-metric-value">@Model.Result.RiskLevel</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Assessment</div>
+                            <div class="result-metric-value">Cardiac</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: var(--warning-yellow);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: var(--warning-yellow);">Analysis Error</h3>
+                        </div>
+                    </div>
+                    <p>@Model.Result.Error</p>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This heart disease risk assessment provides informational insights only and is <strong>not a medical diagnosis</strong>.
+            The results are based on machine learning analysis of the UCI Heart Disease Dataset. Please consult a
+            cardiologist or qualified healthcare professional for proper cardiac evaluation and treatment.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

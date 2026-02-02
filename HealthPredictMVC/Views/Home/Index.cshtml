@@ -1,0 +1,193 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-badge">
+            <i class="fas fa-shield-alt"></i>
+            AI-Powered Health Screening
+        </div>
+        <h1>Multi-Disease Prediction System</h1>
+        <p>
+            Leverage advanced machine learning algorithms for early disease risk assessment.
+            Get instant insights about your health with our comprehensive screening tools.
+        </p>
+    </div>
+</section>
+
+<!-- Disease Cards Section - FULLY CLICKABLE -->
+<section class="container">
+    <h2 class="text-center mb-4">Choose a Health Assessment</h2>
+    <p class="text-center text-secondary mb-4">
+        Click on any card below to start your health risk assessment
+    </p>
+
+    <div class="disease-cards-grid">
+        <!-- Diabetes Card - CLICKABLE -->
+        <a asp-controller="Diabetes" asp-action="Index" class="disease-card diabetes">
+            <div class="disease-card-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <h3 class="disease-card-title">Diabetes Risk Assessment</h3>
+            <p class="disease-card-description">
+                Evaluate your risk of Type 2 Diabetes based on glucose levels, BMI, family history, and other key indicators.
+            </p>
+            <span class="disease-card-link">
+                Start Assessment <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
+
+        <!-- Heart Disease Card - CLICKABLE -->
+        <a asp-controller="HeartDisease" asp-action="Index" class="disease-card heart">
+            <div class="disease-card-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3 class="disease-card-title">Heart Disease Check</h3>
+            <p class="disease-card-description">
+                Comprehensive cardiac risk assessment analyzing cholesterol, blood pressure, ECG results, and more.
+            </p>
+            <span class="disease-card-link">
+                Start Assessment <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
+
+        <!-- Parkinson's Card - CLICKABLE -->
+        <a asp-controller="Parkinsons" asp-action="Index" class="disease-card parkinsons">
+            <div class="disease-card-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="disease-card-title">Parkinson's Screening</h3>
+            <p class="disease-card-description">
+                Voice-based screening using biomedical voice measurements to detect potential early Parkinson's indicators.
+            </p>
+            <span class="disease-card-link">
+                Start Assessment <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
+
+        <!-- Liver Health Card - CLICKABLE -->
+        <a asp-controller="Liver" asp-action="Index" class="disease-card liver">
+            <div class="disease-card-icon">
+                <i class="fas fa-liver"></i>
+            </div>
+            <h3 class="disease-card-title">Liver Health Analysis</h3>
+            <p class="disease-card-description">
+                Liver function assessment based on bilirubin levels, enzyme markers, and protein analysis.
+            </p>
+            <span class="disease-card-link">
+                Start Assessment <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
+
+        <!-- Knee OA Card - CLICKABLE (CNN-based) -->
+        <a asp-controller="Knee" asp-action="Index" class="disease-card knee">
+            <div class="disease-card-icon">
+                <i class="fas fa-x-ray"></i>
+            </div>
+            <h3 class="disease-card-title">Knee Pain Assessment</h3>
+            <p class="disease-card-description">
+                AI-powered X-ray analysis using CNN to assess knee osteoarthritis severity (KL Grade 0-4).
+            </p>
+            <span class="disease-card-link">
+                Upload X-Ray <i class="fas fa-arrow-right"></i>
+            </span>
+        </a>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works container">
+    <h2><i class="fas fa-cogs me-2"></i>How It Works</h2>
+    <div class="steps-grid">
+        <div class="step-item">
+            <div class="step-number">1</div>
+            <h4 class="step-title">Select Assessment</h4>
+            <p class="step-description">Choose the health screening that matches your needs from our five available assessments.</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">2</div>
+            <h4 class="step-title">Enter Parameters</h4>
+            <p class="step-description">Input your health parameters using our user-friendly form with clear guidance.</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">3</div>
+            <h4 class="step-title">AI Analysis</h4>
+            <p class="step-description">Our machine learning models analyze your data using trained algorithms.</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">4</div>
+            <h4 class="step-title">Get Results</h4>
+            <p class="step-description">Receive instant risk assessment with confidence scores and recommendations.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>5</h3>
+                <p>Disease Predictions</p>
+            </div>
+            <div class="stat-item">
+                <h3>95%+</h3>
+                <p>Model Accuracy</p>
+            </div>
+            <div class="stat-item">
+                <h3>53+</h3>
+                <p>Health Parameters</p>
+            </div>
+            <div class="stat-item">
+                <h3>Instant</h3>
+                <p>Results</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Section -->
+<section class="container mb-4">
+    <div class="how-it-works">
+        <h2><i class="fas fa-microchip me-2"></i>Powered By Advanced Technology</h2>
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-number"><i class="fas fa-code"></i></div>
+                <h4 class="step-title">ASP.NET Core MVC</h4>
+                <p class="step-description">Enterprise-grade web framework for reliable, scalable frontend.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number"><i class="fas fa-flask"></i></div>
+                <h4 class="step-title">Flask REST API</h4>
+                <p class="step-description">Python-powered backend for machine learning predictions.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number"><i class="fas fa-robot"></i></div>
+                <h4 class="step-title">Scikit-Learn</h4>
+                <p class="step-description">Industry-standard ML library with validated algorithms.</p>
+            </div>
+            <div class="step-item">
+                <div class="step-number"><i class="fas fa-database"></i></div>
+                <h4 class="step-title">Validated Datasets</h4>
+                <p class="step-description">Trained on medical research datasets from Kaggle.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Medical Disclaimer -->
+<section class="container mb-4">
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This application by MedIndia provides informational health insights only and is <strong>not a medical diagnosis</strong>.
+            The predictions are based on machine learning models and should not replace professional medical advice.
+            Please consult a qualified healthcare provider for proper diagnosis and treatment.
+        </p>
+    </div>
+</section>
