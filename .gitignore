@@ -22,8 +22,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Model files (generated at runtime)
-models/*.pkl
+# Model files are needed for deployment - do NOT ignore them
 
 # Jupyter
 .ipynb_checkpoints/
