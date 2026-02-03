@@ -1,7 +1,44 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python -m py_compile:*)"
+      "Bash(python -m py_compile:*)",
+      "Bash(python train_models.py:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd pre-trained ML models, training script, and update app\n\n- Add train_models.py script for training all disease prediction models\n- Add 16 pre-trained .pkl model files \\(models for diabetes, heart, parkinsons, liver\\)\n- Update app.py with:\n  - Local logo loading from assets/med.jpg\n  - Sidebar fix \\(keep header visible for reopening\\)\n  - Kaggle dataset attribution disclaimer\n  - Joblib model loading with fallback training\n  - MedIndia branding throughout\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(findstr:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(powershell -Command \"Get-Command dotnet -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell -Command \"Test-Path ''C:\\\\Program Files\\\\dotnet\\\\dotnet.exe''\")",
+      "Bash(powershell -Command:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/dotnet\")",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" --version)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" restore)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run --launch-profile http)",
+      "Bash(curl:*)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build --no-incremental)",
+      "Bash(for i in 0 1 2 3 4)",
+      "Bash(taskkill:*)",
+      "Bash(dotnet run:*)",
+      "Bash(cmd.exe /c \"cd /d \"\"E:\\\\disease -net\\\\HealthPredictMVC\"\" && dotnet run\")",
+      "Bash(/mnt/c/Program\\\\ Files/dotnet/dotnet.exe run:*)",
+      "Bash(powershell.exe -Command \"cd ''E:\\\\disease -net\\\\HealthPredictMVC''; dotnet run\")",
+      "Bash(powershell.exe -Command:*)",
+      "Bash(\"/mnt/c/Program Files/dotnet/dotnet.exe\" run --project \"/mnt/e/disease -net/HealthPredictMVC/HealthPredictMVC.csproj\")",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run:*)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" run --project \"/e/disease -net/HealthPredictMVC/HealthPredictMVC.csproj\")",
+      "Bash(git remote:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd ASP.NET Core MVC frontend + Flask API backend architecture\n\n- ASP.NET Core MVC 8.0 frontend with healthcare-grade UI\n- Flask REST API backend for ML predictions\n- 5 disease prediction modules: Diabetes, Heart, Parkinson''s, Liver, Knee OA\n- CNN-based Knee Osteoarthritis assessment using MobileNetV2\n- Clickable homepage cards with disease overview sections\n- Feature explanations for all input fields\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRemove old Streamlit files, keep only .NET + Flask architecture\n\nRemoved: app.py, src/, .streamlit/, assets/, data/, train_models.py,\nrequirements.txt, README.md, duplicate CSV files\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
