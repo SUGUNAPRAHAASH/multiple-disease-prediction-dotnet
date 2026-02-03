@@ -29,6 +29,27 @@ from sklearn.svm import SVC
 app = Flask(__name__)
 CORS(app)  # Enable CORS for ASP.NET Core frontend
 
+
+@app.route('/')
+def home():
+    return jsonify({
+        'status': 'running',
+        'app': 'HealthPredict AI - Multi-Disease Prediction API',
+        'endpoints': [
+            '/api/diabetes/predict',
+            '/api/heart/predict',
+            '/api/parkinsons/predict',
+            '/api/liver/predict',
+            '/api/knee/predict'
+        ]
+    })
+
+
+@app.route('/api/health')
+def health_check():
+    return jsonify({'status': 'healthy'})
+
+
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODELS_DIR = os.path.join(BASE_DIR, 'models')
